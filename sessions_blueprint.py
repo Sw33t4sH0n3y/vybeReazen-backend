@@ -1,59 +1,85 @@
-import uuid
-
+from flask import Blueprint, jsonify, request, g
 from datetime import datetime
-from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
-from database import get_db, query, query_one, excute
+import psycopg2
+import psycopg2.extras
+import os
+import uuid
 from auth_middleware import get_current_user
 
-router = APIRouter(prefix="/sessions", tags=["sessions"])
+sessions_blueprint = Blueprint('sessions', __name__)
 
-class SessionCreate(BaseModel):
-    soundscape_id: str
-    volume_used: = 0.75
+def get_db_connection():
+    connection = psycopg2.connect(
+        host='localhost',
+        database=os.getenv('POSTGRES_DATABASE'),
+        user=os.getenv('POSTGRES_USERNAME'),
+        password=os.getenv('POSTGRES_PASSWORD')
+    )
+    return connection
 
-class SessionUpdate(BaseModel):
-    ended_at: datetime: = None
-    duration_actual: int = 0
-    completed: bool = False
 
-@router.post("")
-def create_session(data: SessionCreate, user=Depends(get_current_user), conn=Depends(get_db)):
+@sessions_blueprint.route('/sessions', methods=['POST'])
+@token_required
+def create_session():
+    data = request.get_json
     session_id = str(uuid.uuid4())
-    sql = """
+    user_id = g.user["id"]
+    soundscape_id = data.get("soundscape_id")
+    volume_used = data.get("volume_used, 0.75")
+
+    connection = get_db_connection()
+    cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cursor.execute("""
         INSERT INTO sessions(id, user_id, soundscape_id, volume_used)
         VALUES (%s, %s, %s, %s)
         RETURNING *
-    """
-    with conc.cursor() as cur:
-        cur.execute(sql, (session_id, user["id"], data.soundscapes_id, date.volume_used))
-        con.commit()
-            return cur.fetchone()
+    """, (session_id, user_id, soundscape_id, volume_used))
+    
+    session = cursor.fetchone()
+    connection.commit()
+    connection.close()
+    return jsonify(session), 201
 
-@router.patch("/{session_id}")
-def update_session(session_id: str, data: SessionUpdate, user=Depends(get_current_user), conn=Depends(get_db)):
-    sql = """
+@sessions_blueprint.route('/sessions/<session_id>', methods=['PATCH'])
+@token_required
+def update_session(session_id):
+    data = request.get.json()
+    user_id = g.user["id"]
+    ended_at = data.get("ended_at",datetime.utcnow())
+    duration_actual = data.get("duration_actual", 0)
+    completed = data.get("completed", False)
+
+    connection = get_db_connection()
+    cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cursor.execute("""
         UPDATE sessions
         SET ended_at = %s, duration_actual = %s, completed = %s
         WHERE id = %s AND user_id = %s 
         RETURNING *
-    """
-    with conn.cursor() as cur:
-        cur.execute(sql, (data.ended_at, data.duration_actual, data.completed, session_id, user["id"]))
-        conn.commit()
-        result = cur.fetchone()
-        if not result:
-            raise HTTPException(status_code=404, detail="session not found")
-            return result
+    """, (ended_at, duration_actual, completed, session_id, user_id))
 
-@router.get("")
-def get_user_sessions(user=Depends(get_current_user), conn=Depends(get_db)):
-    sql = """
+    session = cursor.fetchone()
+    connection.commit()
+    connection.close()
+
+    if session is None:
+        return jsonify({"err": "Session not found"}), 404
+    return jsonify(session), 200
+
+@sessions_blueprint.route('/sessions', methods=['GET'])
+@token_required
+def get_user_sessions():
+    user_id = g.user["id"]
+    connection = get_db_connection()
+    cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cursor.execute("""
         SELECT s.*,   sc.name AS soundscape_name, sc.category, sc.genre
         FROM sessions s
         JOIN soundscapes sc ON s.soundscape_id = sc.id
         WHERE s.user_id = %s
         ORDER BY s.started_at DESC
-    """
-    return query(conn,sql, (user["id"],))              
+    """, (user_id))
+    sessions = cursor.fetchall()
+    connection.close()
+    return jsonify(sessions), 200              
                                 
