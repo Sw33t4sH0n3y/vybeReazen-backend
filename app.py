@@ -7,6 +7,7 @@ from auth_middleware import token_required
 from auth_blueprint import authentication_blueprint
 from soundscapes_blueprint import soundscapes_blueprint
 from sessions_blueprint import sessions_blueprint
+from helpers import get_safeguards
 
 app = Flask(__name__)
 CORS(app)
@@ -58,14 +59,8 @@ def serve_audio(filename):
 #  SAFEGUARDS
 
 @app.route('/safeguards')
-def get_safeguards():
-    safeguards = {
-        "frequency_min_hz": 20,
-        "frequency_max_hz": 1000,
-        "max_master_volume": 0.90,
-        "max_session_minutes": 120
-    }
-    return jsonify(safeguards), 200
+def safeguards():
+    return jsonify(get_safeguards()), 200
 
 #  ROOT
 

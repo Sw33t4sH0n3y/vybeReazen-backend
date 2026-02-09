@@ -7,7 +7,7 @@ SAFEGUARDS = {
 
 def validate_volume(volume: float) -> tuple[bool,str]:
     if volume > SAFEGUARDS["max_master_volume"]:
-        return False, f"Volume exceeds masx of {SAFEGUARDS['max_master_volume']}"
+        return False, f"Volume exceeds max of {SAFEGUARDS['max_master_volume']}"
     return True, "Valid"
 
 def validate_frequency(hertz: int) -> tuple[bool, str]:
