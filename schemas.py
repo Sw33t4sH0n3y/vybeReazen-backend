@@ -29,7 +29,7 @@ SOUNDSCAPES = [
     {
         "id": "aura_003",
         "name": "Bodywork",
-        "description": "Gentle drum rythyms with 639Hz connection frequency",
+        "description": "Gentle drum rhythms with 639Hz connection frequency",
         "category": "massage",
         "genre": "dub",
         "duration_seconds": 1200,
