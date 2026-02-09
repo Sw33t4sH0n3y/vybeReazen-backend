@@ -24,7 +24,7 @@ def get_all_soundscapes():
     cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
     if category:
-        cursor.execute("SELECT * FROM soundscapes WHERE category = %s ORDER BY name"; (category))
+        cursor.execute("SELECT * FROM soundscapes WHERE category = %s ORDER BY name", (category))
     else:
         cursor.execute("SELECT *FROM soundscapes ORDER BY name")
 

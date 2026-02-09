@@ -4,7 +4,7 @@ import psycopg2
 import psycopg2.extras
 import os
 import uuid
-from auth_middleware import get_current_user
+from auth_middleware import token_required
 
 sessions_blueprint = Blueprint('sessions', __name__)
 

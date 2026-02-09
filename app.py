@@ -66,9 +66,9 @@ def safeguards():
 
 @app.route('/')
 def root():
-    return jsonify ({"message: Healing Frequencies API", "status": "running"}), 200
+    return jsonify ({"message": "Healing Frequencies API", "status": "running"}), 200
 
 
 # Run our application, by default on port 5000
-if __name__ == '__main__':
+# if __name__ == '__main__':
 app.run(debug=True, port=5000)
