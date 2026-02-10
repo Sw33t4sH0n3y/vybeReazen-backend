@@ -3,7 +3,7 @@ import psycopg2
 import psycopg2.extras
 import os
 from auth_middleware import token_required
-from helpers import get_db_connection, validate_volume, get_safeguards
+from db_helpers import get_db_connection, validate_volume, get_safeguards
 
 soundscapes_blueprint = Blueprint('soundscapes', __name__)
 

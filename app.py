@@ -7,7 +7,7 @@ from auth_middleware import token_required
 from auth_blueprint import authentication_blueprint
 from soundscapes_blueprint import soundscapes_blueprint
 from sessions_blueprint import sessions_blueprint
-from helpers import get_db_connection, validate_volume, get_safeguards
+from db_helpers import get_db_connection, validate_volume, get_safeguards
 
 app = Flask(__name__)
 CORS(app)
@@ -30,7 +30,7 @@ def get_db_connection():
 @token_required
 def users_index():
     connection = get_db_connection()
-    connection = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cursor.execute("SELECT id, username FROM users;")
     users = cursor.fetchall()
     connection.close()
