@@ -1,19 +1,11 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, g
 import psycopg2
 import psycopg2.extras
 import os
 from auth_middleware import token_required
+from helpers import get_db_connection, validate_volume, get_safeguards
 
 soundscapes_blueprint = Blueprint('soundscapes', __name__)
-
-def get_db_connection():
-    connection = psycopg2.connect(
-        host='localhost',
-        database=os.getenv('POSTGRES_DATABASE'),
-        user=os.getenv('POSTGRES_USERNAME'),
-        password=os.getenv('POSTGRES_PASSWORD')
-    )
-    return connection
 
 
 @soundscapes_blueprint.route('/soundscapes', methods=['GET'])

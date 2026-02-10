@@ -5,17 +5,9 @@ import psycopg2.extras
 import os
 import uuid
 from auth_middleware import token_required
+from helpers import get_db_connection, validate_volume, get_safeguards
 
 sessions_blueprint = Blueprint('sessions', __name__)
-
-def get_db_connection():
-    connection = psycopg2.connect(
-        host='localhost',
-        database=os.getenv('POSTGRES_DATABASE'),
-        user=os.getenv('POSTGRES_USERNAME'),
-        password=os.getenv('POSTGRES_PASSWORD')
-    )
-    return connection
 
 
 @sessions_blueprint.route('/sessions', methods=['POST'])

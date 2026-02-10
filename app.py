@@ -7,7 +7,7 @@ from auth_middleware import token_required
 from auth_blueprint import authentication_blueprint
 from soundscapes_blueprint import soundscapes_blueprint
 from sessions_blueprint import sessions_blueprint
-from helpers import get_safeguards
+from helpers import get_db_connection, validate_volume, get_safeguards
 
 app = Flask(__name__)
 CORS(app)
@@ -70,5 +70,4 @@ def root():
 
 
 # Run our application, by default on port 5000
-# if __name__ == '__main__':
 app.run(debug=True, port=5000)
