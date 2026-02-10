@@ -3,7 +3,7 @@ SESSIONS = []
 
 SOUNDSCAPES = [
     {
-        "id": "aura_001",
+        "id": "1",
         "name": "Uptown Riddim",
         "description": "Upbeat dance with reggae and the 528Hz love frequency",
         "category": "fluid_movement",
@@ -15,7 +15,7 @@ SOUNDSCAPES = [
         "file_name": "528Hz Uptown Riddim.mp3"
     },
     {
-        "id": "aura_002",
+        "id": "2",
         "name": "Tropical",
         "description": "Breathe with 432Hz natural harmony",
         "category": "relaxation",
@@ -27,7 +27,7 @@ SOUNDSCAPES = [
         "file_name": "Tropical 432Hz.mp3"
     },
     {
-        "id": "aura_003",
+        "id": "3",
         "name": "Bodywork",
         "description": "Gentle drum rhythms with 639Hz connection frequency",
         "category": "massage",
@@ -39,7 +39,7 @@ SOUNDSCAPES = [
         "file_name": "639Hz Massage.mp3"
     },
     {
-        "id": "aura_004",
+        "id": "4",
         "name": "Deep inner stillness",
         "description": "Flowing rhythm of breath and nature the spirtual growth 741Hz frequency",
         "category": "meditation",
@@ -51,7 +51,7 @@ SOUNDSCAPES = [
         "file_name": "Native American Flute.mp3"
     },
     {
-        "id": "aura_005",
+        "id": "5",
         "name": "Emotional Detox",
         "description": "Release, Rejuvenate, Rejoice",
         "category": "Mental Clearing",
