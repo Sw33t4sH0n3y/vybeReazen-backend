@@ -68,3 +68,45 @@ def signin():
         return jsonify({"err": str(err)}), 500
     finally:
         connection.close()
+
+@authentication_blueprint.route('auth/me', methods=['GET'])
+@token_required
+def get_me():
+    try:
+        user_id = g.user["id"]
+        connection = get_db_connection()
+        cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+        cursor.execute("SELECT id, username, email FROM users WHERE id = %s;", (user_id,))
+        user = cursor.fetchone()
+        connection.close()
+
+        if user is None:
+            return jsonify({"err": "USer not found"}), 404
+        return jsonify(user), 200
+    except Exception as err:
+        return jsonify({"err": str(err)}), 500
+
+@authentication_blueprint.route('auth/me', methods=['PUT'])
+@token_required
+def update_user():
+    try:
+        data = request.get_json
+        user_id = g.user["id"]
+
+        connection = get_db_connection()
+        cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+        cursor.execute("UPDATE users SET username = %s, email = %s WHERE id = %s RETURNING id, username, email", (data["username"], data["email"], user_id,))
+
+
+        updated_user = cursor.fetchone()
+        connection.commmit()
+        connection.close()
+
+        if updated_user is None:
+            return jsonify({"err": "USer not found"}), 404
+        return jsonify(user), 200
+    except Exception as err:
+        return jsonify({"err": str(err)}), 500
+
