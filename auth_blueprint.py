@@ -15,7 +15,6 @@ authentication_blueprint = Blueprint('authentication_blueprint', __name__)
 def signup():
     try:
         new_user_data = request.get_json()
-        print("Received data:", new_user_data)
         connection = get_db_connection()
         cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
@@ -43,7 +42,6 @@ def signup():
         token = jwt.encode({ "payload": payload }, os.getenv('JWT_SECRET'))
         return jsonify({"token": token}), 201
     except Exception as err:
-        print("Error", err)
         return jsonify({"err": str(err)}), 401
 
 @authentication_blueprint.route('/auth/sign-in', methods=["POST"])
