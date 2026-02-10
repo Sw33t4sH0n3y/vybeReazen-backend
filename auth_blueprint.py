@@ -1,10 +1,11 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request,g
 from dotenv import load_dotenv
 import os
 import jwt
 import bcrypt
 import psycopg2, psycopg2.extras
 from db_helpers import get_db_connection
+from auth_middleware import token_required
 
 
 authentication_blueprint = Blueprint('authentication_blueprint', __name__)
@@ -67,7 +68,7 @@ def signin():
     finally:
         connection.close()
 
-@authentication_blueprint.route('auth/me', methods=['GET'])
+@authentication_blueprint.route('/auth/me', methods=['GET'])
 @token_required
 def get_me():
     try:
@@ -85,11 +86,11 @@ def get_me():
     except Exception as err:
         return jsonify({"err": str(err)}), 500
 
-@authentication_blueprint.route('auth/me', methods=['PUT'])
+@authentication_blueprint.route('/auth/me', methods=['PUT'])
 @token_required
 def update_user():
     try:
-        data = request.get_json
+        data = request.get_json()
         user_id = g.user["id"]
 
         connection = get_db_connection()
@@ -99,12 +100,12 @@ def update_user():
 
 
         updated_user = cursor.fetchone()
-        connection.commmit()
+        connection.commit()
         connection.close()
 
         if updated_user is None:
             return jsonify({"err": "USer not found"}), 404
-        return jsonify(user), 200
+        return jsonify(updated_user), 200
     except Exception as err:
         return jsonify({"err": str(err)}), 500
 
