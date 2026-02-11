@@ -41,6 +41,12 @@ CREATE TABLE sessions (
     completed BOOLEAN DEFAULT FALSE,
     volume_used REAL CHECK (volume_used BETWEEN 0 AND 1)
 );
+CREATE TABLE favorites (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    soundscape_id VARCHAR(36) NOT NULL REFERENCES soundscapes(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
 
 CREATE INDEX idx_sessions_user_id ON sessions(user_id);
 CREATE INDEX idx_sessions_soundscape_id ON sessions(soundscape_id);
@@ -52,4 +58,4 @@ INSERT INTO soundscapes(id, name, description, category, genre, duration_seconds
 ('2', 'Tropical', 'Breathe with 432Hz natural harmony', 'relaxation', 'afro world', 900, 432, 'Natural Tuning', 95, '432Hz_Tropical.mp3'),
 ('3', 'Bodywork', 'Gentle drum rhythms with 639 connection frequency', 'massage', 'dub', 1200, 639, 'Connection', 80, '639Hz_Massage.mp3'),
 ('4', 'Deep inner stillness', 'Flowing rhythm of breath and nature with spiritual growth 741Hz frequency', 'meditation', 'spatial', 600, 741, 'Mental clarity', 65, '741Hz_Native_Flute.mp3'),
-('5', 'Emotional Detox', 'Release, Rejuvenate, Rejoice', 'Mental Clearing', 'Quechua chanting and Flute', 600, 147, 'Emotional Detox', 82, '174Hz_Quechua_Flute.mp3')
+('5', 'Emotional Detox', 'Release, Rejuvenate, Rejoice', 'Mental Clearing', 'Quechua chanting and Flute', 600, 147, 'Emotional Detox', 82, '174Hz_Quechua_Flute.mp3');
