@@ -19,10 +19,10 @@ def get_favorites():
         "WHERE f.user_id = %s "
         "ORDER BY f.created_at DESC"
     )
-    cursor.execute(query, (g.user_id,))
+    cursor.execute(query, (g.user['id'],))
 
     columns = [desc[0] for desc in cursor.description]
-    favorites = [dict(zip(columns, row)) for row in cursor.fetall()]
+    favorites = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
     cursor.close()
     connection.close()
@@ -30,20 +30,20 @@ def get_favorites():
     return jsonify(favorites), 200
 
     # Add favorite
-    @favorites_blueprint.route('/favorites', methods=['POST'])
-    @token_required
-    def add_favorite():
-        data = request.get_json()
-        soundscape_id = data.get('soundscape_id')
+@favorites_blueprint.route('/favorites', methods=['POST'])
+@token_required
+def add_favorite():
+    data = request.get_json()
+    soundscape_id = data.get('soundscape_id')
 
-        if not soundscape_id:
-            return jsonify({'err': 'soundscape_id required'}), 400
+    if not soundscape_id:
+        return jsonify({'err': 'soundscape_id required'}), 400
 
-        connection = get_db_connection()
-        cursor = connection.cursor()
+    connection = get_db_connection()
+    cursor = connection.cursor()
 
     try:
-        cursor.execute('INSERT INTO favorites (user_id, soundscape_id), RETURNING id', (g.user_id, soundscape_id))
+        cursor.execute('INSERT INTO favorites (user_id, soundscape_id) VALUES (%s, %s) RETURNING id', (g.user['id'], soundscape_id))
 
         favorite_id = cursor.fetchone()[0]
         connection.commit()
@@ -65,7 +65,7 @@ def remove_favorite(soundscape_id):
     connection = get_db_connection()
     cursor = connection.cursor()   
 
-    cursor.execute('DELETE FROM favorites WHERE user_id = %s AND soundscape_id = %s', (g.user_id, soundscape_id))
+    cursor.execute('DELETE FROM favorites WHERE user_id = %s AND soundscape_id = %s', (g.user['id'], soundscape_id))
 
     connection.commit()
     cursor.close()

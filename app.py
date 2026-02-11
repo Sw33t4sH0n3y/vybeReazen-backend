@@ -19,6 +19,7 @@ CORS(app)
 app.register_blueprint(authentication_blueprint)
 app.register_blueprint(soundscapes_blueprint)
 app.register_blueprint(sessions_blueprint)
+app.register_blueprint(favorites_blueprint)
 
 def get_db_connection():
     connection = psycopg2.connect(
