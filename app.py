@@ -2,11 +2,16 @@ from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 import psycopg2
+
 import psycopg2.extras
+
 from auth_middleware import token_required
+
 from auth_blueprint import authentication_blueprint
 from soundscapes_blueprint import soundscapes_blueprint
 from sessions_blueprint import sessions_blueprint
+from favorites_blueprint import favorites_blueprint
+
 from db_helpers import get_db_connection, validate_volume, get_safeguards
 
 app = Flask(__name__)
