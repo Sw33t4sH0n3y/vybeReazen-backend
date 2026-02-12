@@ -12,6 +12,7 @@ flask-dotenv = "*"
 pyjwt = "*"
 flask-cors = "*"
 gunicorn = "*"
+cloudinary = "*"
 
 [dev-packages]
 

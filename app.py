@@ -12,6 +12,7 @@ from soundscapes_blueprint import soundscapes_blueprint
 from sessions_blueprint import sessions_blueprint
 from favorites_blueprint import favorites_blueprint
 from frequencies_blueprint import frequencies_blueprint
+from profile_blueprint import profile_blueprint
 
 from db_helpers import get_db_connection, validate_volume, get_safeguards
 
@@ -22,6 +23,7 @@ app.register_blueprint(soundscapes_blueprint)
 app.register_blueprint(sessions_blueprint)
 app.register_blueprint(favorites_blueprint)
 app.register_blueprint(frequencies_blueprint)
+app.register_blueprint(profile_blueprint)
 
 def get_db_connection():
     connection = psycopg2.connect(
@@ -78,5 +80,4 @@ def root():
 
 
 # Run our application, by default on port 5000
-# app.run(port=os.getenv('PORT'))
-app.run(port=33507)
+app.run(port=os.getenv('PORT'))

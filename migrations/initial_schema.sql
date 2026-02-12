@@ -10,7 +10,7 @@ CREATE TABLE users (
     email VARCHAR(255) UNIQUE NOT NULL,
     username VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    name VARCHAR(100),
+    image_url TEXT DEFAULT NULL
     role VARCHAR(20) DEFAULT 'user' NOT NULL,
     is_active BOOLEAN DEFAULT TRUE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -58,6 +58,7 @@ CREATE TABLE frequencies (
     chakra VARCHAR(50),
     color VARCHAR(50)
 );
+
 
 CREATE INDEX idx_sessions_user_id ON sessions(user_id);
 CREATE INDEX idx_sessions_soundscape_id ON sessions(soundscape_id);
