@@ -78,4 +78,4 @@ def root():
 
 
 # Run our application, by default on port 5000
-app.run(port=os.getenv('PORT'))
+app.run(port=os.getenv('PORT', 33507))
