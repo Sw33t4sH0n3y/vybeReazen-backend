@@ -41,11 +41,22 @@ CREATE TABLE sessions (
     completed BOOLEAN DEFAULT FALSE,
     volume_used REAL CHECK (volume_used BETWEEN 0 AND 1)
 );
+
 CREATE TABLE favorites (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     soundscape_id VARCHAR(36) NOT NULL REFERENCES soundscapes(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE frequencies (
+    id SERIAL PRIMARY KEY,
+    hz INTEGER UNIQUE NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    benefits TEXT,
+    chakra VARCHAR(50),
+    color VARCHAR(50)
 );
 
 CREATE INDEX idx_sessions_user_id ON sessions(user_id);
@@ -59,3 +70,10 @@ INSERT INTO soundscapes(id, name, description, category, genre, duration_seconds
 ('3', 'Bodywork', 'Gentle drum rhythms with 639 connection frequency', 'massage', 'dub', 1200, 639, 'Connection', 80, '639Hz_Massage.mp3'),
 ('4', 'Deep inner stillness', 'Flowing rhythm of breath and nature with spiritual growth 741Hz frequency', 'meditation', 'spatial', 600, 741, 'Mental clarity', 65, '741Hz_Native_Flute.mp3'),
 ('5', 'Emotional Detox', 'Release, Rejuvenate, Rejoice', 'Mental Clearing', 'Quechua chanting and Flute', 600, 147, 'Emotional Detox', 82, '174Hz_Quechua_Flute.mp3');
+
+INSERT INTO frequencies (hz, name, description, benefits, chakra, color) VALUES
+(174, 'Foundation', 'Lowest Solfeggio frequency for grounding', 'Pain relief', 'security', 'grounding', 'Root', '#ff0000'),
+(432, 'Natural Tuning', 'Universal frequency of nature', 'Calm', 'clarity', 'harmony with nature', 'Heart', '#00ff00'),
+(528, 'Love Frequency', 'Miracle tone associated with DNA Repair', 'Healing', 'transformation', 'love', 'Solar Plexus', '#ffff00'),
+(639, 'Connection', 'Frequency for harmonizing relationships', 'Communication', 'connection', 'peace', 'Throat', '#00ffff'),
+(741, 'intuition', 'Awakening intuition and expression', 'Mental clarity', 'problem solving', 'creativity', 'Third Eye', '#4b0082');
