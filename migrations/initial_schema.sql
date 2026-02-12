@@ -72,7 +72,7 @@ INSERT INTO soundscapes(id, name, description, category, genre, duration_seconds
 ('5', 'Emotional Detox', 'Release, Rejuvenate, Rejoice', 'Mental Clearing', 'Quechua chanting and Flute', 600, 147, 'Emotional Detox', 82, '174Hz_Quechua_Flute.mp3');
 
 INSERT INTO frequencies (hz, name, description, benefits, chakra, color) VALUES
-(174, 'Foundation', 'Lowest Solfeggio frequency for grounding', 'Pain relief', 'security', 'grounding', 'Root', '#ff0000'),
+(174, 'Foundation', 'Lowest Solfeggio frequency for grounding', 'Pain relief and grounding', 'Root', '#ff0000'),
 (432, 'Natural Tuning', 'Universal frequency of nature', 'Calm', 'clarity', 'harmony with nature', 'Heart', '#00ff00'),
 (528, 'Love Frequency', 'Miracle tone associated with DNA Repair', 'Healing', 'transformation', 'love', 'Solar Plexus', '#ffff00'),
 (639, 'Connection', 'Frequency for harmonizing relationships', 'Communication', 'connection', 'peace', 'Throat', '#00ffff'),
