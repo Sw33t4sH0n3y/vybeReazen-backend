@@ -11,7 +11,7 @@ def get_frequencies():
     cursor.execute('SELECT * FROM frequencies ORDER BY hz')
 
     columns = [desc[0] for desc in cursor.description]
-    frequencies = dict(zip(columns, row))
+    frequencies = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
     cursor.close()
     connection.close()
@@ -19,7 +19,7 @@ def get_frequencies():
     return jsonify(frequencies), 200
 @frequencies_blueprint.route('/frequencies/<int:hz>', methods=['GET'])
 def get_frequency(hz):
-    connection = get_db_connection
+    connection = get_db_connection()
     cursor = connection.cursor()
     cursor.execute('SELECT *  FROM frequencies WHERE hz = %s', (hz,))
 
@@ -27,6 +27,13 @@ def get_frequency(hz):
     if not row:
         cursor.close()
         connection.close()
+        return jsonify({'error': 'frequency not found'}), 404
+
+    columns = [desc[0] for desc in cursor.description]
+    frequency = dict(zip(columns, row))
+
+    cursor.close()
+    connection.close()    
 
     return jsonify(frequency), 200    
 
