@@ -78,6 +78,6 @@ def safeguards():
 def root():
     return jsonify ({"message": "Healing Frequencies API", "status": "running"}), 200
 
-
+if __name__ == '__main__':
 # Run our application, by default on port 5000
-app.run(port=os.getenv('PORT'))
+    app.run()
