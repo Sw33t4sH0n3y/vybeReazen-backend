@@ -13,6 +13,7 @@ pyjwt = "*"
 flask-cors = "*"
 gunicorn = "*"
 cloudinary = "*"
+google-generativeai = "*"
 
 [dev-packages]
 

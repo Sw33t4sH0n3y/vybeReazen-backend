@@ -10,7 +10,6 @@ Flask API for the vybeReazen healing frequencies app.
 - PostgreSQL
 - JWT Authentication
 - Cloudinary
-- Google Gemini
 
 ---
 

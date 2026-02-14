@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify
 from db_helpers import get_db_connection
+
 frequencies_blueprint = Blueprint('frequencies',__name__)
 
 # Get All frequencies
@@ -37,3 +38,28 @@ def get_frequency(hz):
 
     return jsonify(frequency), 200    
 
+@frequencies_blueprint.route('/frequencies/<int:hz>/ai-info', methods=['GET'])
+def get_ai_frequency_info(hz):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM frequencies WHERE hz = %s', (hz,))
+    row=cursor.fetchone()
+
+    if not row:
+        cursor.close()
+        connection.close()
+        return jsonify({'error': 'Frequency not found'}), 404
+
+    columns = [desc[0] for desc in cursor.description]
+    frequency = dict(zip(columns, row))
+
+    cursor.close()
+    connection.close()
+
+    try:
+        ai_info = get_frequency_info(frequency['hz'], frequency['name'], frequency['chakra'])
+        return jsonify({'hz' : hz, 'ai_info': ai_info}), 200
+    except Exception as e:
+        print("Gemini Error:", e)
+        return jsonify({'error': str(e)}), 500
