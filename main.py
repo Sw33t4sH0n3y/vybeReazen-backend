@@ -1,7 +1,10 @@
 import os
+from dotenv import load_dotenv
 import cloudinary
 import cloudinary.uploader
 from cloudinary.utils import cloudinary_url
+
+load_dotenv()
 
 # Configuration
 cloudinary.config(
