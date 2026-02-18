@@ -61,5 +61,4 @@ def get_ai_frequency_info(hz):
         ai_info = get_frequency_info(frequency['hz'], frequency['name'], frequency['chakra'])
         return jsonify({'hz' : hz, 'ai_info': ai_info}), 200
     except Exception as e:
-        print("Gemini Error:", e)
         return jsonify({'error': str(e)}), 500
