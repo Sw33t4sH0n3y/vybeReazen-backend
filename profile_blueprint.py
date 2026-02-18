@@ -28,18 +28,14 @@ def get_profile():
 @token_required
 def upload_profile_image():
     try:
-        print("1. Route hit")
         image = request.files.get('image')
-        print("2. Image received:", image)
 
         if not image:
             return jsonify({'error': 'No image provided'}), 400
 
-            print("3. About to upload to Cloudinary")
 
         # Upload to Cloudinary
         image_url = upload_image(image)
-        print("4. Cloudinary URL:", image_url)
 
         # Update database
         connection = get_db_connection()
@@ -54,11 +50,9 @@ def upload_profile_image():
         connection.commit()
         cursor.close()
         connection.close()
-        print("5. Success:", user)
         return jsonify(user), 200
 
     except Exception as error:
-        print("upload error:", error)
         return jsonify({'error': str(error)}), 500
 
  # Delete profile picture
